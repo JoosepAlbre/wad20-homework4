@@ -22,9 +22,10 @@ router.get('/', authorize, (request, response) => {
 
 });
 
-router.post('/', authorize,  (request, response) => {
+router.post('/', authorize, (request, response) => {
 
     // Endpoint to create a new post
+
 
 });
 
