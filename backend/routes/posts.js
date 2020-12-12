@@ -23,6 +23,17 @@ router.get('/', authorize, (request, response) => {
 });
 
 router.post('/', authorize,  (request, response) => {
+    const userID = request.currentUser.id;
+    const text = request.body.text;
+    const type = request.body.type;
+    const url = request.body.url;
+    let post = [
+        userID,
+        text,
+        type,
+        url
+    ];
+    PostModel.create(post);
 
     // Endpoint to create a new post
 
