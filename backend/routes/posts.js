@@ -8,6 +8,7 @@ router.get('/', authorize, (request, response) => {
 
     // Endpoint to get posts of people that currently logged in user follows or their own posts
 
+    
     PostModel.getAllForUser(request.currentUser.id, (postIds) => {
 
         if (postIds.length) {
@@ -22,7 +23,6 @@ router.get('/', authorize, (request, response) => {
 
 });
 
-<<<<<<< HEAD
 router.post('/', authorize,  (request, response) => {
     const userID = request.currentUser.id;
     const text = request.body.text;
@@ -45,9 +45,6 @@ router.post('/', authorize,  (request, response) => {
         }
         response.json([])
     });
-=======
-router.post('/', authorize, (request, response) => {
->>>>>>> a9c506047af69e9f6c9a36b913439edf48f8c987
 
     // Endpoint to create a new post
 
