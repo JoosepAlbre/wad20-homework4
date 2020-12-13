@@ -22,6 +22,7 @@ router.get('/', authorize, (request, response) => {
 
 });
 
+<<<<<<< HEAD
 router.post('/', authorize,  (request, response) => {
     const userID = request.currentUser.id;
     const text = request.body.text;
@@ -44,8 +45,12 @@ router.post('/', authorize,  (request, response) => {
         }
         response.json([])
     });
+=======
+router.post('/', authorize, (request, response) => {
+>>>>>>> a9c506047af69e9f6c9a36b913439edf48f8c987
 
     // Endpoint to create a new post
+
 
 });
 

@@ -1,7 +1,9 @@
-import {mount, createLocalVue} from '@vue/test-utils'
+import { mount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 import Posts from "../../src/components/Posts.vue";
+import { post } from '../../../backend/routes/posts';
+import moment from 'moment';
 
 const localVue = createLocalVue();
 
@@ -25,8 +27,7 @@ const store = new Vuex.Store({
 });
 
 //Create dummy routes
-const routes = [
-    {
+const routes = [{
         path: '/',
         name: 'posts',
     },
@@ -36,10 +37,9 @@ const routes = [
     }
 ];
 
-const router = new VueRouter({routes});
+const router = new VueRouter({ routes });
 
-const testData = [
-    {
+const testData = [{
         id: 1,
         text: "I think it's going to rain",
         createTime: "2020-12-05 13:53:23",
@@ -98,9 +98,43 @@ jest.mock("axios", () => ({
 
 describe('Posts', () => {
 
-    const wrapper = mount(Posts, {router, store, localVue});
+    const wrapper = mount(Posts, { router, store, localVue });
 
-    it('1 == 1', function () {
-        expect(true).toBe(true)
+    it('Exactly as many posts are rendered as in testData', function() {
+        const testPosts = testData.length;
+        const renderedPosts = wrapper.findAll('.post').length;
+        expect(renderedPosts).toBe(testPosts);
     });
+
+
+    it('Check the media tags', function() {
+        const posts = wrapper.findAll('.post');
+        for (let i = 0; i < posts.length; i++) {
+            if (testData[i].media) {
+                if (testData[i].media.type === "image") {
+                    //console.log("Is an image: " + posts.at(i).find('.post-image').find('img').exists());
+                    expect(posts.at(i).find('.post-image').find('img').exists()).toBe(true);
+                } else if (testData[i].media.type == "video") {
+                    //console.log("is a video: " + posts.at(i).find('.post-image').find('video').exists())
+                    expect(posts.at(i).find('.post-image').find('video').exists()).toBe(true);
+                }
+            } else {
+                //console.log("Media is null: " + (!posts.at(i).find(".post-image").exists()))
+                expect(posts.at(i).find(".post-image").exists()).toBe(false);
+            }
+
+        }
+    })
+
+
+    it('Is the post create time in the correct format', function() {
+        const dates = wrapper.findAll('.post-author')
+        for (let i = 0; i < dates.length; i++) {
+            //console.log(dates.at(i).findAll('small').at(1).text() + " ||| " + moment(testData[i].createTime).format('LLLL'));
+            expect(dates.at(i).findAll('small').at(1).text()).toEqual(moment(testData[i].createTime).format('LLLL'));
+
+        }
+
+    });
+
 });
