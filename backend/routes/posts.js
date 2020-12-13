@@ -8,6 +8,7 @@ router.get('/', authorize, (request, response) => {
 
     // Endpoint to get posts of people that currently logged in user follows or their own posts
 
+
     PostModel.getAllForUser(request.currentUser.id, (postIds) => {
 
         if (postIds.length) {
@@ -51,11 +52,24 @@ router.post('/', authorize, (request, response) => {
 router.put('/:postId/likes', authorize, (request, response) => {
 
     // Endpoint for current user to like a post
+    let userId = request.currentUser.id;
+    let postId = request.params.postId;
+
+    PostModel.like(userId, postId, () => {
+        response.status(201).json();
+    })
+
 });
 
 router.delete('/:postId/likes', authorize, (request, response) => {
 
     // Endpoint for current user to unlike a post
+    let userId = request.currentUser.id;
+    let postId = request.params.postId;
+
+    PostModel.unlike(userId, postId, () => {
+        response.status(201).json();
+    })
 
 });
 
